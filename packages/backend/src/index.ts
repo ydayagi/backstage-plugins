@@ -33,6 +33,7 @@ import scaffolder from './plugins/scaffolder';
 import search from './plugins/search';
 import techdocs from './plugins/techdocs';
 import { PluginEnvironment } from './types';
+import myplugin from './plugins/myplugin';
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();
@@ -95,6 +96,9 @@ async function main() {
   apiRouter.use('/techdocs', await techdocs(techdocsEnv));
   apiRouter.use('/proxy', await proxy(proxyEnv));
   apiRouter.use('/search', await search(searchEnv));
+
+  const mypluginEnv = useHotMemoize(module, () => createEnv('myplugin'));
+  apiRouter.use('/myplugin', await myplugin(mypluginEnv));
 
   // Add backends ABOVE this line; this 404 handler is the catch-all fallback
   apiRouter.use(notFoundHandler());
