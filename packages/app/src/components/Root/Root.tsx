@@ -27,6 +27,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MapIcon from '@material-ui/icons/MyLocation';
 import SearchIcon from '@material-ui/icons/Search';
 
+import { ParodosSidebarGroup } from '@janus-idp/plugin-parodos-notifications';
+
 import LogoFull from './LogoFull';
 import LogoIcon from './LogoIcon';
 
@@ -78,6 +80,8 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
           <SidebarItem icon={MapIcon} to="tech-radar" text="Tech Radar" />
         </SidebarScrollWrapper>
       </SidebarGroup>
+      <SidebarDivider />
+      <ParodosSidebarGroup />
       <SidebarSpace />
       <SidebarDivider />
       <SidebarGroup
