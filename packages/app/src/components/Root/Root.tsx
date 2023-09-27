@@ -12,6 +12,7 @@ import {
   SidebarSpace,
   useSidebarOpenState,
 } from '@backstage/core-components';
+import { ParodosSidebarGroup } from '@backstage/plugin-parodos-notifications';
 import { SidebarSearchModal } from '@backstage/plugin-search';
 import {
   Settings as SidebarSettings,
@@ -26,8 +27,6 @@ import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import MenuIcon from '@material-ui/icons/Menu';
 import MapIcon from '@material-ui/icons/MyLocation';
 import SearchIcon from '@material-ui/icons/Search';
-
-import { ParodosSidebarGroup } from '@janus-idp/plugin-parodos-notifications';
 
 import LogoFull from './LogoFull';
 import LogoIcon from './LogoIcon';

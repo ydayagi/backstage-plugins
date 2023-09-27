@@ -17,6 +17,7 @@ import {
   catalogImportPlugin,
 } from '@backstage/plugin-catalog-import';
 import { orgPlugin } from '@backstage/plugin-org';
+import { ParodosNotificationsPage } from '@backstage/plugin-parodos-notifications';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
 import { SearchPage } from '@backstage/plugin-search';
@@ -29,8 +30,6 @@ import {
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { UserSettingsPage } from '@backstage/plugin-user-settings';
-
-import { ParodosNotificationsPage } from '@janus-idp/plugin-parodos-notifications';
 
 import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
