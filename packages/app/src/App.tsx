@@ -16,8 +16,11 @@ import {
   CatalogImportPage,
   catalogImportPlugin,
 } from '@backstage/plugin-catalog-import';
+import {
+  NOTIFICATIONS_ROUTE,
+  NotificationsPage,
+} from '@backstage/plugin-notifications-frontend';
 import { orgPlugin } from '@backstage/plugin-org';
-import { ParodosNotificationsPage } from '@backstage/plugin-parodos-notifications';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
 import { SearchPage } from '@backstage/plugin-search';
@@ -96,10 +99,7 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
-    <Route
-      path="/parodos-notifications"
-      element={<ParodosNotificationsPage />}
-    />
+    <Route path={NOTIFICATIONS_ROUTE} element={<NotificationsPage />} />
   </FlatRoutes>
 );
 
