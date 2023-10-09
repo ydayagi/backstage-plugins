@@ -35,7 +35,7 @@
     "@backstage/plugin-search-backend-node": "^1.2.3",
     "@backstage/plugin-techdocs-backend": "^1.6.4",
     "@janus-idp/backstage-plugin-rbac-backend": "^0.1.0",
-    "@internal/plugin-myplugin-backend": "^0.1.0",
+    "@internal/plugin-notifications-backend": "^0.1.0",
     "app": "*",
     "better-sqlite3": "8.4.0",
     "dockerode": "3.3.5",
