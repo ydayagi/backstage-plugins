@@ -12,7 +12,7 @@ import {
   SidebarSpace,
   useSidebarOpenState,
 } from '@backstage/core-components';
-import { ParodosSidebarGroup } from '@backstage/plugin-parodos-notifications';
+import { NotificationsSidebarGroup } from '@backstage/plugin-notifications-frontend';
 import { SidebarSearchModal } from '@backstage/plugin-search';
 import {
   Settings as SidebarSettings,
@@ -80,7 +80,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         </SidebarScrollWrapper>
       </SidebarGroup>
       <SidebarDivider />
-      <ParodosSidebarGroup />
+      <NotificationsSidebarGroup />
       <SidebarSpace />
       <SidebarDivider />
       <SidebarGroup
