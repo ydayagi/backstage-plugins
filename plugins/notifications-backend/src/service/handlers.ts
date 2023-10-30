@@ -56,7 +56,7 @@ export async function createNotification ( dbClient: Knex<any, any>, catalogClie
 }
 
 // getNotifications
-export async function getNotifications( dbClient: Knex<any, any>
+export function getNotifications( dbClient: Knex<any, any>
     , filter: NotificationsFilter
     , pageSize: number
     , pageNumber: number
@@ -68,7 +68,7 @@ export async function getNotifications( dbClient: Knex<any, any>
         throw new Error('pageSize and pageNumber must both be either 0 or greater than 0');
     }
 
-    let query = dbClient('messages').select('*');
+    let query = dbClient('messagess').select('*');
 
     addFilter(query, filter);
 
@@ -76,9 +76,8 @@ export async function getNotifications( dbClient: Knex<any, any>
         query.limit(pageSize).offset((pageNumber-1)*pageSize);
     }
     
-    const messages = await query;
-
-    const notifications = messages.map( message => {
+    const ret = query.then( (messages) => {
+        const notifications = messages.map( message => {
             const notification: Notification = {
                 id: message.id,
                 created: message.created,
@@ -91,22 +90,26 @@ export async function getNotifications( dbClient: Knex<any, any>
             return notification;
         })
 
-    return notifications;
+        return notifications;
+    });
+
+    return ret;
 }
 
-export async function getNotificationsCount( dbClient: Knex<any, any>
+export function getNotificationsCount( dbClient: Knex<any, any>
     , filter: NotificationsFilter
     ) : Promise<{count: number}> {
-    let msgcount = -1;
-
+    
     var query = dbClient('messages').count('* as CNT');
     
     addFilter(query, filter);
     
-    await query.then(count => {
-        msgcount = count[0].CNT as number;
-        });
-    return {count: msgcount};
+    const ret = query.then( (count) => {
+        const msgcount = count[0].CNT as number;
+        return {count: msgcount};
+    });
+
+    return ret;
 }
 
 function addFilter(query: Knex.QueryBuilder, filter: NotificationsFilter) {
@@ -119,3 +122,4 @@ function addFilter(query: Knex.QueryBuilder, filter: NotificationsFilter) {
         query.andWhere('created', '>', filter.createdAfter);
     }
 }
+
