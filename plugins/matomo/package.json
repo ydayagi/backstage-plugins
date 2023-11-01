@@ -19,7 +19,7 @@
     "export-dynamic": "janus-cli package export-dynamic-plugin",
     "tsc": "tsc",
     "lint": "backstage-cli package lint",
-    "test": "backstage-cli package test",
+    "test": "backstage-cli package test --passWithNoTests --coverage",
     "clean": "backstage-cli package clean",
     "prepack": "backstage-cli package prepack",
     "postpack": "backstage-cli package postpack"
