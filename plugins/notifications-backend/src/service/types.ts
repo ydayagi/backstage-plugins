@@ -8,6 +8,7 @@ export type CreateNotificationRequest = {
   targetGroups?: string[];
 };
 
+// Keep in sync with FE: plugins/notifications-frontend/src/api/notificationsApi.ts
 export type Notification = {
   id: string; // UUID
   created: Date;
