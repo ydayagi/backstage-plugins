@@ -29,6 +29,16 @@ export async function initDB(dbConfig: Config): Promise<Knex<any, any>> {
     });
   }
 
+  if (!(await dbClient.schema.hasTable('actions'))) {
+    await dbClient.schema.createTable('actions', table => {
+      table.uuid('id', { primaryKey: true }).defaultTo(dbClient.fn.uuid());
+      table.uuid('message_id').notNullable();
+      table.foreign('message_id').references('id').inTable('messages');
+      table.string('url').notNullable();
+      table.string('title').notNullable();
+    });
+  }
+
   return dbClient;
 }
 
@@ -37,4 +47,10 @@ export type MessagesInsert = {
   title: string;
   message?: string;
   topic?: string;
+};
+
+export type ActionsInsert = {
+  message_id: string;
+  title: string;
+  url: string;
 };
