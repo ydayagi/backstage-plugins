@@ -30,9 +30,15 @@ export type Notification = {
   actions: NotificationAction[];
 };
 
+// Keep in sync with FE: plugins/notifications-frontend/src/api/notificationsApi.ts
 export type NotificationsFilter = {
   containsText?: string;
   createdAfter?: Date;
   messageScope?: 'all' | 'user' | 'system';
   user?: string;
+};
+
+export type NotificationsQuerySorting = {
+  fieldName?: string;
+  direction?: string;
 };

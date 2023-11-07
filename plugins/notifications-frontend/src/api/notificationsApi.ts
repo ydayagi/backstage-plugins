@@ -25,11 +25,21 @@ export type Notification = {
 export type NotificationsFilter = {
   containsText?: string;
   createdAfter?: Date;
+  messageScope?: 'all' | 'user' | 'system';
+  user?: string;
+};
+
+// Keep in sync with BE: plugins/notifications-backend/src/service/types.ts
+export type NotificationsQuerySorting = {
+  fieldName: 'title' | 'message' | 'created' | 'origin' | 'topic';
+  direction: 'asc' | 'desc';
 };
 
 export type NotificationsQuery = NotificationsFilter & {
   pageSize: number;
   pageNumber: number;
+
+  sorting?: NotificationsQuerySorting;
 };
 export type NotificationsCountQuery = NotificationsFilter & {
   unreadOnly?: boolean;

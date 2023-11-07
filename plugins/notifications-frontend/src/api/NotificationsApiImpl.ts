@@ -30,6 +30,12 @@ export class NotificationsApiImpl implements NotificationsApi {
         filter.createdAfter.toISOString(),
       );
     }
+    if (filter.messageScope) {
+      url.searchParams.append('messageScope', filter.messageScope);
+    }
+    if (filter.user) {
+      url.searchParams.append('user', filter.user);
+    }
   }
 
   post(notification: Notification): Promise<string> {
@@ -43,6 +49,11 @@ export class NotificationsApiImpl implements NotificationsApi {
 
     url.searchParams.append('pageSize', `${query.pageSize}`);
     url.searchParams.append('pageNumber', `${query.pageNumber}`);
+
+    if (query.sorting) {
+      url.searchParams.append('orderBy', `${query.sorting.fieldName}`);
+      url.searchParams.append('orderByDirec', `${query.sorting.direction}`);
+    }
 
     this.addFilter(url, query);
 

@@ -12,6 +12,7 @@ import {
   getNotifications,
   getNotificationsCount,
 } from './handlers';
+import { NotificationsQuerySorting } from './types';
 
 interface RouterOptions {
   logger: Logger;
@@ -47,7 +48,7 @@ export async function createRouter(
   });
 
   router.get('/notifications', (request, response, next) => {
-    const { pageSize, pageNumber } = request.query;
+    const { pageSize, pageNumber, orderBy, orderByDirec } = request.query;
 
     if (typeof pageSize !== 'string' || typeof pageNumber !== 'string') {
       throw new Error(
@@ -62,12 +63,18 @@ export async function createRouter(
       throw new Error('either pageSize or pageNumber is not a number');
     }
 
+    const sorting: NotificationsQuerySorting = {
+      fieldName: orderBy?.toString(),
+      direction: orderByDirec?.toString(),
+    };
+
     getNotifications(
       dbClient,
       catalogClient,
       request.query,
       pageSizeNum,
       pageNumberNum,
+      sorting,
     )
       .then(notifications => response.json(notifications))
       .catch(next);
