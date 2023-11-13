@@ -1,13 +1,44 @@
-# Notifications
+# Notifications Frontend
 
-Welcome to the Notifications plugin!
+This Backstage front-end plugin provides:
 
-_This plugin was created through the Backstage CLI_
+- NotificationsApi for accessing notifications by other FE plugins
+- common visual components like the Notifications Page, active left-side Notifications menu item or system-wide notifications alerts
+
+It depends on the notifications-common package and makes REST API calls to the backend implemented within notifications-backend plugin.
 
 ## Getting started
 
-Your plugin has been added to the example app in this repository, meaning you'll be able to access it by running `yarn start` in the root directory, and then navigating to [/notifications](http://localhost:3000/notifications).
+- Have the notifications-backend running (follow README instructions there)
 
-You can also serve the plugin in isolation by running `yarn start` in the plugin directory.
-This method of serving the plugin provides quicker iteration speed and a faster startup and hot reloads.
-It is only meant for local development, and the setup for it can be found inside the [/dev](./dev) directory.
+## Installing the plugin
+
+TODO
+
+## Using the Notifications API
+
+```
+import { notificationsApiRef } from '@backstage/plugin-notifications-frontend';
+...
+const notificationsApi = useApi(notificationsApiRef);
+```
+
+Check the `src/api/notificationsApi.ts` for the API description.
+
+## Front-end React Compoenents
+
+### NotificationsPage
+
+A page for listing and managing notifications from the logged-in users perspective.
+
+### NotificationsSidebarItem
+
+Represents a left-side menu item for the Notifications.
+
+Contains polling of the `/notifications/count` endpoint to mark if there is a new user's notification available.
+
+Contains polling of the `/notifications` endpoint to potentially show an alert for new system-wide notification.
+
+### Utils
+
+- `usePollingEfect()` - React hook to ease polling
