@@ -31,3 +31,15 @@ runs:
     - name: Run tests
       shell: bash
       run: yarn test --filter=${{ inputs.args }}
+
+    - name: Start backstage
+      shell: bash
+      run: yarn start:backstage
+
+    - name: Wait for  backstage
+      shell: bash
+      run: timeout 15 bash -c 'until echo > /dev/tcp/localhost/7007; do sleep 3; done'
+
+    - name: Test get notifications
+      shell: bash
+      run: curl http://localhost:7007/api/notifications/notifications
