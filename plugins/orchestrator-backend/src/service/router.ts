@@ -25,11 +25,13 @@ import {
 import { RouterArgs } from '../routerWrapper';
 import { ApiResponseBuilder } from '../types/apiResponse';
 import {
+  getInstancesV1,
   getWorkflowOverviewByIdV1,
   getWorkflowOverviewV1,
   getWorkflowsV1,
 } from './api/v1';
 import {
+  getInstancesV2,
   getWorkflowOverviewByIdV2,
   getWorkflowOverviewV2,
   getWorkflowsV2,
@@ -310,15 +312,22 @@ function setupInternalRoutes(
   );
 
   router.get('/instances', async (_, res) => {
-    const instances = await services.dataIndexService.fetchProcessInstances();
-
-    if (!instances) {
-      res.status(500).send("Couldn't fetch process instances");
-      return;
-    }
-
-    res.status(200).json(instances);
+    await getInstancesV1(services.dataIndexService)
+      .then(result => res.status(200).json(result))
+      .catch(error => {
+        res.status(500).send(error.message || 'Internal Server Error');
+      });
   });
+
+  // v2
+  api.register(
+    'getInstances',
+    async (_c, _req: express.Request, res: express.Response, next) => {
+      await getInstancesV2(services.dataIndexService)
+        .then(result => res.json(result))
+        .catch(next);
+    },
+  );
 
   router.get('/instances/:instanceId', async (req, res) => {
     const {
