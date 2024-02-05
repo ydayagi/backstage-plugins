@@ -3,48 +3,53 @@
  * Do not make direct changes to the file.
  */
 
+
 export interface paths {
-  '/v2/workflows/overview': {
+  "/v2/workflows/overview": {
     /** @description Get a list of workflow overviews */
-    get: operations['getWorkflowsOverview'];
+    get: operations["getWorkflowsOverview"];
   };
-  '/v2/workflows/{workflowId}/overview': {
+  "/v2/workflows/{workflowId}/overview": {
     /** @description Get a workflow overview by ID */
-    get: operations['getWorkflowOverviewById'];
+    get: operations["getWorkflowOverviewById"];
   };
-  '/v2/workflows': {
+  "/v2/workflows": {
     /** @description Get a list of workflow */
-    get: operations['getWorkflows'];
+    get: operations["getWorkflows"];
   };
-  '/v2/workflows/instances': {
+  "/v2/workflows/instances": {
     /**
      * Get instances
      * @description Retrieve an array of instances
      */
-    get: operations['getInstances'];
+    get: operations["getInstances"];
   };
-  '/v2/workflows/instances/{instanceId}': {
+  "/v2/workflows/instances/{instanceId}": {
     /** Get Workflow Instance by ID */
-    get: operations['getInstanceById'];
+    get: operations["getInstanceById"];
   };
-  '/v2/workflows/instances/{instanceId}/results': {
+  "/v2/workflows/instances/{instanceId}/results": {
     /** Get assessment results */
-    get: operations['getWorkflowResults'];
+    get: operations["getWorkflowResults"];
   };
-  '/v2/workflows/instances/statuses': {
+  "/v2/workflows/instances/statuses": {
     /**
      * Get workflow status list
      * @description Retrieve an array of workflow statuses
      */
-    get: operations['getWorkflowStatuses'];
+    get: operations["getWorkflowStatuses"];
   };
-  '/v2/workflows/{workflowId}/execute': {
+  "/v2/workflows/{workflowId}/execute": {
     /** Execute a workflow */
-    post: operations['executeWorkflow'];
+    post: operations["executeWorkflow"];
   };
-  '/v2/specs': {
+  "/v2/specs": {
     /** Get workflow specifications */
-    get: operations['getWorkflowSpecs'];
+    get: operations["getWorkflowSpecs"];
+  };
+  "/v2/workflows/{workflowId}/progress": {
+    /** Get Workflow Progress */
+    get: operations["getWorkflowProgress"];
   };
 }
 
@@ -53,8 +58,8 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     WorkflowOverviewListResultDTO: {
-      overviews?: components['schemas']['WorkflowOverviewDTO'][];
-      paginationInfo?: components['schemas']['PaginationInfoDTO'];
+      overviews?: components["schemas"]["WorkflowOverviewDTO"][];
+      paginationInfo?: components["schemas"]["PaginationInfoDTO"];
     };
     WorkflowOverviewDTO: {
       /** @description Workflow unique identifier */
@@ -64,7 +69,7 @@ export interface components {
       uri?: string;
       lastTriggeredMs?: number;
       lastRunStatus?: string;
-      category?: components['schemas']['WorkflowCategoryDTO'];
+      category?: components["schemas"]["WorkflowCategoryDTO"];
       avgDurationMs?: number;
       description?: string;
     };
@@ -77,10 +82,10 @@ export interface components {
      * @description Category of the workflow
      * @enum {string}
      */
-    WorkflowCategoryDTO: 'assessment' | 'infrastructure';
+    WorkflowCategoryDTO: "assessment" | "infrastructure";
     WorkflowListResultDTO: {
-      items: components['schemas']['WorkflowDTO'][];
-      paginationInfo: components['schemas']['PaginationInfoDTO'];
+      items: components["schemas"]["WorkflowDTO"][];
+      paginationInfo: components["schemas"]["PaginationInfoDTO"];
     };
     WorkflowDTO: {
       /** @description Workflow unique identifier */
@@ -89,33 +94,33 @@ export interface components {
       name?: string;
       /** @description URI of the workflow definition */
       uri: string;
-      category: components['schemas']['WorkflowCategoryDTO'];
+      category: components["schemas"]["WorkflowCategoryDTO"];
       /** @description Description of the workflow */
       description?: string;
       annotations?: string[];
     };
-    ProcessInstancesDTO: components['schemas']['ProcessInstanceDTO'][];
+    ProcessInstancesDTO: components["schemas"]["ProcessInstanceDTO"][];
     AssessedProcessInstanceDTO: {
-      instance: components['schemas']['ProcessInstanceDTO'];
-      assessedBy?: components['schemas']['ProcessInstanceDTO'];
+      instance: components["schemas"]["ProcessInstanceDTO"];
+      assessedBy?: components["schemas"]["ProcessInstanceDTO"];
     };
     ProcessInstanceDTO: {
       id?: string;
       name?: string;
       workflow?: string;
-      status?: components['schemas']['ProcessInstanceStatusDTO'];
+      status?: components["schemas"]["ProcessInstanceStatusDTO"];
       /** Format: date-time */
       started?: string;
       duration?: string;
-      category?: components['schemas']['WorkflowCategoryDTO'];
+      category?: components["schemas"]["WorkflowCategoryDTO"];
       description?: string;
-      workflowdata?: components['schemas']['WorkflowDataDTO'];
+      workflowdata?: components["schemas"]["WorkflowDataDTO"];
     };
     WorkflowDataDTO: {
-      workflowoptions?: components['schemas']['WorkflowOptionsDTO'][];
+      workflowoptions?: components["schemas"]["WorkflowOptionsDTO"][];
       [key: string]: unknown;
     };
-    WorkflowOptionsDTO: components['schemas']['WorkflowSuggestionDTO'][];
+    WorkflowOptionsDTO: components["schemas"]["WorkflowSuggestionDTO"][];
     WorkflowSuggestionDTO: {
       id?: string;
       name?: string;
@@ -124,12 +129,7 @@ export interface components {
      * @description Status of the workflow run
      * @enum {string}
      */
-    ProcessInstanceStatusDTO:
-      | 'Running'
-      | 'Error'
-      | 'Completed'
-      | 'Aborted'
-      | 'Suspended';
+    ProcessInstanceStatusDTO: "Running" | "Error" | "Completed" | "Aborted" | "Suspended";
     WorkflowRunStatusDTO: {
       key?: string;
       value?: string;
@@ -144,11 +144,53 @@ export interface components {
     };
     WorkflowSpecFileDTO: {
       path?: string;
-      content?: components['schemas']['WorkflowContentDTO'];
+      content?: components["schemas"]["WorkflowContentDTO"];
     };
     WorkflowContentDTO: {
       /** @description JSON string */
       content?: string;
+    };
+    WorkflowProgressDTO: components["schemas"]["NodeInstanceDTO"] & {
+      status?: components["schemas"]["ProcessInstanceStatusDTO"];
+      error?: components["schemas"]["ProcessInstanceErrorDTO"];
+    };
+    NodeInstanceDTO: {
+      /**
+       * @description Type name
+       * @default NodeInstance
+       */
+      __typename?: string;
+      /** @description Node instance ID */
+      id?: string;
+      /** @description Node name */
+      name?: string;
+      /** @description Node type */
+      type?: string;
+      /**
+       * Format: date-time
+       * @description Date when the node was entered
+       */
+      enter?: string;
+      /**
+       * Format: date-time
+       * @description Date when the node was exited (optional)
+       */
+      exit?: string;
+      /** @description Definition ID */
+      definitionId?: string;
+      /** @description Node ID */
+      nodeId?: string;
+    };
+    ProcessInstanceErrorDTO: {
+      /**
+       * @description Type name
+       * @default ProcessInstanceError
+       */
+      __typename?: string;
+      /** @description Node definition ID */
+      nodeDefinitionId?: string;
+      /** @description Error message (optional) */
+      message?: string;
     };
   };
   responses: never;
@@ -163,19 +205,20 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
+
   /** @description Get a list of workflow overviews */
   getWorkflowsOverview: {
     responses: {
       /** @description Success */
       200: {
         content: {
-          'application/json': components['schemas']['WorkflowOverviewListResultDTO'];
+          "application/json": components["schemas"]["WorkflowOverviewListResultDTO"];
         };
       };
       /** @description Error fetching workflow overviews */
       500: {
         content: {
-          'text/plain': string;
+          "text/plain": string;
         };
       };
     };
@@ -192,13 +235,13 @@ export interface operations {
       /** @description Success */
       200: {
         content: {
-          'application/json': components['schemas']['WorkflowOverviewDTO'];
+          "application/json": components["schemas"]["WorkflowOverviewDTO"];
         };
       };
       /** @description Error fetching workflow overview */
       500: {
         content: {
-          'text/plain': string;
+          "text/plain": string;
         };
       };
     };
@@ -209,13 +252,13 @@ export interface operations {
       /** @description Success */
       200: {
         content: {
-          'application/json': components['schemas']['WorkflowListResultDTO'];
+          "application/json": components["schemas"]["WorkflowListResultDTO"];
         };
       };
       /** @description Error fetching workflow list */
       500: {
         content: {
-          'text/plain': string;
+          "text/plain": string;
         };
       };
     };
@@ -229,13 +272,13 @@ export interface operations {
       /** @description Success */
       200: {
         content: {
-          'application/json': components['schemas']['ProcessInstancesDTO'];
+          "application/json": components["schemas"]["ProcessInstancesDTO"];
         };
       };
       /** @description Error fetching instances */
       500: {
         content: {
-          'text/plain': string;
+          "text/plain": string;
         };
       };
     };
@@ -252,13 +295,13 @@ export interface operations {
       /** @description Successful response */
       200: {
         content: {
-          'application/json': components['schemas']['ProcessInstanceDTO'];
+          "application/json": components["schemas"]["ProcessInstanceDTO"];
         };
       };
       /** @description Error fetching instance */
       500: {
         content: {
-          'text/plain': string;
+          "text/plain": string;
         };
       };
     };
@@ -275,13 +318,13 @@ export interface operations {
       /** @description Successful response */
       200: {
         content: {
-          'application/json': components['schemas']['WorkflowDataDTO'];
+          "application/json": components["schemas"]["WorkflowDataDTO"];
         };
       };
       /** @description Error getting workflow results */
       500: {
         content: {
-          'text/plain': string;
+          "text/plain": string;
         };
       };
     };
@@ -295,13 +338,13 @@ export interface operations {
       /** @description Success */
       200: {
         content: {
-          'application/json': components['schemas']['WorkflowRunStatusDTO'][];
+          "application/json": components["schemas"]["WorkflowRunStatusDTO"][];
         };
       };
       /** @description Error fetching workflow statuses */
       500: {
         content: {
-          'text/plain': string;
+          "text/plain": string;
         };
       };
     };
@@ -316,20 +359,20 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['ExecuteWorkflowRequestDTO'];
+        "application/json": components["schemas"]["ExecuteWorkflowRequestDTO"];
       };
     };
     responses: {
       /** @description Successful execution */
       200: {
         content: {
-          'application/json': components['schemas']['ExecuteWorkflowResponseDTO'];
+          "application/json": components["schemas"]["ExecuteWorkflowResponseDTO"];
         };
       };
       /** @description Internal Server Error */
       500: {
         content: {
-          'text/plain': string;
+          "text/plain": string;
         };
       };
     };
@@ -340,13 +383,36 @@ export interface operations {
       /** @description Successful retrieval of workflow specifications */
       200: {
         content: {
-          'application/json': components['schemas']['WorkflowSpecFileDTO'][];
+          "application/json": components["schemas"]["WorkflowSpecFileDTO"][];
         };
       };
       /** @description Error fetching workflow specifications */
       500: {
         content: {
-          'text/plain': string;
+          "text/plain": string;
+        };
+      };
+    };
+  };
+  /** Get Workflow Progress */
+  getWorkflowProgress: {
+    parameters: {
+      path: {
+        /** @description Unique identifier of the workflow */
+        workflowId: string;
+      };
+    };
+    responses: {
+      /** @description Successful response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WorkflowProgressDTO"];
+        };
+      };
+      /** @description Error fetching workflow progress */
+      500: {
+        content: {
+          "text/plain": string;
         };
       };
     };
