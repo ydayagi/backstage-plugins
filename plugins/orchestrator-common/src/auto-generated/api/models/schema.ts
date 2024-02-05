@@ -16,6 +16,8 @@ export interface paths {
   "/v2/workflows": {
     /** @description Get a list of workflow */
     get: operations["getWorkflows"];
+    /** Create or update a workflow */
+    post: operations["createWorkflow"];
   };
   "/v2/workflows/instances": {
     /**
@@ -256,6 +258,39 @@ export interface operations {
         };
       };
       /** @description Error fetching workflow list */
+      500: {
+        content: {
+          "text/plain": string;
+        };
+      };
+    };
+  };
+  /** Create or update a workflow */
+  createWorkflow: {
+    parameters: {
+      query?: {
+        /** @description URI parameter */
+        uri?: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          uri: string;
+          body?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description Created */
+      201: {
+        content: {
+          "application/json": {
+            workflowItem?: components["schemas"]["WorkflowDTO"];
+          };
+        };
+      };
+      /** @description Error creating workflow */
       500: {
         content: {
           "text/plain": string;
