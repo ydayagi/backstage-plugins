@@ -42,6 +42,10 @@ export interface paths {
     /** Execute a workflow */
     post: operations['executeWorkflow'];
   };
+  '/v2/specs': {
+    /** Get workflow specifications */
+    get: operations['getWorkflowSpecs'];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -137,6 +141,14 @@ export interface components {
     };
     ExecuteWorkflowResponseDTO: {
       id?: string;
+    };
+    WorkflowSpecFileDTO: {
+      path?: string;
+      content?: components['schemas']['WorkflowContentDTO'];
+    };
+    WorkflowContentDTO: {
+      /** @description JSON string */
+      content?: string;
     };
   };
   responses: never;
@@ -315,6 +327,23 @@ export interface operations {
         };
       };
       /** @description Internal Server Error */
+      500: {
+        content: {
+          'text/plain': string;
+        };
+      };
+    };
+  };
+  /** Get workflow specifications */
+  getWorkflowSpecs: {
+    responses: {
+      /** @description Successful retrieval of workflow specifications */
+      200: {
+        content: {
+          'application/json': components['schemas']['WorkflowSpecFileDTO'][];
+        };
+      };
+      /** @description Error fetching workflow specifications */
       500: {
         content: {
           'text/plain': string;

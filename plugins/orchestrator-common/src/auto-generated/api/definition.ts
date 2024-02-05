@@ -299,6 +299,37 @@ const OPENAPI = `
           }
         }
       }
+    },
+    "/v2/specs": {
+      "get": {
+        "summary": "Get workflow specifications",
+        "operationId": "getWorkflowSpecs",
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of workflow specifications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkflowSpecFileDTO"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error fetching workflow specifications",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -556,6 +587,26 @@ const OPENAPI = `
         "properties": {
           "id": {
             "type": "string"
+          }
+        }
+      },
+      "WorkflowSpecFileDTO": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "content": {
+            "$ref": "#/components/schemas/WorkflowContentDTO"
+          }
+        }
+      },
+      "WorkflowContentDTO": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "JSON string"
           }
         }
       }
