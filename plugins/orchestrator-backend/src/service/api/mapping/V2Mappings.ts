@@ -36,14 +36,17 @@ export function mapToWorkflowOverviewDTO(
     description: overview.description,
   };
 
-  function mapWorkflowCategoryDTOFromString(category?: string) {
-    switch (category?.toLocaleLowerCase()) {
+  function mapWorkflowCategoryDTOFromString(
+    category?: string,
+  ): WorkflowCategoryDTO {
+    const lowerCase = category?.toLocaleLowerCase();
+
+    switch (lowerCase) {
       case 'assessment':
-        return WorkflowCategoryDTO.ASSESSMENT;
       case 'infrastructure':
-        return WorkflowCategoryDTO.INFRASTRUCTURE;
+        return lowerCase;
       default:
-        return WorkflowCategoryDTO.INFRASTRUCTURE;
+        return 'infrastructure';
     }
   }
 }
@@ -74,14 +77,17 @@ export function mapToWorkflowListResultDTO(
 export function getWorkflowCategoryDTO(
   definition: WorkflowDefinition | undefined,
 ): WorkflowCategoryDTO {
-  if (definition === undefined) {
-    return WorkflowCategoryDTO.INFRASTRUCTURE;
+  let result: WorkflowCategoryDTO = 'infrastructure';
+
+  if (
+    definition?.annotations?.find(
+      annotation => annotation === ASSESSMENT_WORKFLOW_TYPE,
+    )
+  ) {
+    result = 'assessment';
   }
-  return definition?.annotations?.find(
-    annotation => annotation === ASSESSMENT_WORKFLOW_TYPE,
-  )
-    ? WorkflowCategoryDTO.ASSESSMENT
-    : WorkflowCategoryDTO.INFRASTRUCTURE;
+
+  return result;
 }
 
 export function mapToWorkflowDTO(
@@ -98,14 +104,14 @@ export function mapToWorkflowDTO(
   };
 }
 
-export function mapWorkflowCategoryDTO(category?: WorkflowCategory) {
+export function mapWorkflowCategoryDTO(
+  category?: WorkflowCategory,
+): WorkflowCategoryDTO {
   switch (category) {
     case WorkflowCategory.ASSESSMENT:
-      return WorkflowCategoryDTO.ASSESSMENT;
-    case WorkflowCategory.INFRASTRUCTURE:
-      return WorkflowCategoryDTO.INFRASTRUCTURE;
+      return 'assessment';
     default:
-      return WorkflowCategoryDTO.INFRASTRUCTURE;
+      return 'infrastructure';
   }
 }
 
@@ -114,18 +120,19 @@ export function getProcessInstancesDTOFromString(
 ): ProcessInstanceStatusDTO {
   switch (state) {
     case ProcessInstanceState.Active.valueOf():
-      return ProcessInstanceStatusDTO.RUNNING;
+      return 'Running';
     case ProcessInstanceState.Error.valueOf():
-      return ProcessInstanceStatusDTO.ERROR;
+      return 'Error';
     case ProcessInstanceState.Completed.valueOf():
-      return ProcessInstanceStatusDTO.COMPLETED;
+      return 'Completed';
     case ProcessInstanceState.Aborted.valueOf():
-      return ProcessInstanceStatusDTO.ABORTED;
+      return 'Aborted';
     case ProcessInstanceState.Suspended.valueOf():
-      return ProcessInstanceStatusDTO.SUSPENDED;
+      return 'Suspended';
     default:
-      // TODO: What is the default value?
-      return ProcessInstanceStatusDTO.SUSPENDED;
+      throw new Error(
+        'state is not one of the vlalues of type ProcessInstanceStatusDTO',
+      );
   }
 }
 
